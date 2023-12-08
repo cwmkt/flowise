@@ -102,6 +102,10 @@ LANGCHAIN_API_KEY=your_api_key
 LANGCHAIN_PROJECT=your_project
 ```
 
+```bash
+docker-compose up -d
+```
+
 ### Instalação do Nginx proxy reverso
 
 ```bash
