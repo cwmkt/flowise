@@ -25,7 +25,13 @@ sudo apt update && apt upgrade -y
 
 ```bash
 sudo apt-get install -y ca-certificates curl gnupg
+```
+
+```bash
 sudo mkdir -p /etc/apt/keyrings
+```
+
+```bash
 curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
 ```
 
@@ -45,10 +51,13 @@ sudo apt-get install nodejs -y
 npm install -g flowise
 ```
 
-### inicie o flow com usuário e senha
+### Inicie o Flowise com usuário e senha
 ```bash
-npx flowise start & --FLOWISE_USERNAME=user --FLOWISE_PASSWORD=1234
+FLOWISE_USERNAME=user FLOWISE_PASSWORD=1234 npx flowise start &
 ```
+
+💡Substitua `user` pelo nome de usuário desejado<br>
+💡Substitua `1234` por uma senha segura.
 
 ### Instalação do Nginx proxy reverso
 
