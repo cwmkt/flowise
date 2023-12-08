@@ -15,7 +15,7 @@
  
 ### Manual de Instalação Flowise
 
-Atualzie os pacotes da sua VM
+Atualize os pacotes da sua máuquina
 
 ```bash
 sudo apt update && apt upgrade -y
@@ -56,8 +56,40 @@ npx flowise start & --FLOWISE_USERNAME=user --FLOWISE_PASSWORD=1234
 sudo apt install nginx
 ```
 
-``bash
+```bash
 sudo nano /etc/nginx/sites-available/flowise
+```
+
+```bash
+server {
+  server_name flowise.dominio.com.br;
+  
+  underscores_in_headers on;
+
+  location / {
+
+   proxy_pass http://127.0.0.1:5678;
+   proxy_pass_header Authorization;
+   proxy_set_header Upgrade $http_upgrade;
+   proxy_set_header Connection "upgrade";
+   proxy_set_header Host $host;
+   proxy_set_header X-Forwarded-Proto $scheme;
+   proxy_set_header X-Forwarded-Ssl on; # Optional
+   proxy_set_header X-Real-IP $remote_addr;
+   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+   proxy_http_version 1.1;
+   proxy_set_header Connection "";
+   proxy_buffering off;
+   client_max_body_size 0;
+   proxy_read_timeout 36000s;
+   proxy_redirect off;
+  }
+  add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+  ssl_protocols TLSv1.2 TLSv1.3;
+} 
+  ```
+
+```bash
 sudo ln -s /etc/nginx/sites-available/flowise /etc/nginx/sites-enabled
 ```
 
