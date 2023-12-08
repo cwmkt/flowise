@@ -15,7 +15,7 @@
  
 ### Manual de Instalação Flowise
 
-Atualize os pacotes da sua máuquina
+Atualize os pacotes da sua máquina
 
 ```bash
 sudo apt update && apt upgrade -y
@@ -77,7 +77,7 @@ server {
 
   location / {
 
-   proxy_pass http://127.0.0.1:5678;
+   proxy_pass http://127.0.0.1:3000;
    proxy_pass_header Authorization;
    proxy_set_header Upgrade $http_upgrade;
    proxy_set_header Connection "upgrade";
