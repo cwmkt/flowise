@@ -21,43 +21,86 @@ Atualize os pacotes da sua máquina
 sudo apt update && apt upgrade -y
 ```
 
-### Instale o Node V20x.
-
 ```bash
-sudo apt-get install -y ca-certificates curl gnupg
+apt install docker-compose
 ```
 
 ```bash
-sudo mkdir -p /etc/apt/keyrings
+mkdir flowise
 ```
 
 ```bash
-curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+cd flowise
 ```
 
 ```bash
-NODE_MAJOR=20
-echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+nano docker-compose.yml
 ```
 
 ```bash
-sudo apt-get update
-sudo apt-get install nodejs -y
-```
+version: '3.1'
 
-### Instalação do Flowise
+services:
+    flowise:
+        image: flowiseai/flowise
+        restart: always
+        environment:
+            - PORT=${PORT}
+            - FLOWISE_USERNAME=${FLOWISE_USERNAME}
+            - FLOWISE_PASSWORD=${FLOWISE_PASSWORD}
+            - DEBUG=${DEBUG}
+            - DATABASE_PATH=${DATABASE_PATH}
+            - DATABASE_TYPE=${DATABASE_TYPE}
+            - DATABASE_PORT=${DATABASE_PORT}
+            - DATABASE_HOST=${DATABASE_HOST}
+            - DATABASE_NAME=${DATABASE_NAME}
+            - DATABASE_USER=${DATABASE_USER}
+            - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+            - APIKEY_PATH=${APIKEY_PATH}
+            - SECRETKEY_PATH=${SECRETKEY_PATH}
+            - FLOWISE_SECRETKEY_OVERWRITE=${FLOWISE_SECRETKEY_OVERWRITE}
+            - LOG_LEVEL=${LOG_LEVEL}
+            - LOG_PATH=${LOG_PATH}
+        ports:
+            - '${PORT}:${PORT}'
+        volumes:
+            - ~/.flowise:/root/.flowise
+        command: /bin/sh -c "sleep 3; flowise start"
+```
 
 ```bash
-npm install -g flowise
+nano .env
 ```
 
-### Inicie o Flowise com usuário e senha
 ```bash
-FLOWISE_USERNAME=user FLOWISE_PASSWORD=1234 npx flowise start &
-```
+PORT=3000
+DATABASE_PATH=/root/.flowise
+APIKEY_PATH=/root/.flowise
+SECRETKEY_PATH=/root/.flowise
+LOG_PATH=/root/.flowise/logs
 
-💡Substitua `user` pelo nome de usuário desejado<br>
-💡Substitua `1234` por uma senha segura.
+NUMBER_OF_PROXIES= 1
+
+DATABASE_TYPE=postgres
+DATABASE_PORT=""
+DATABASE_HOST=""
+DATABASE_NAME="flowise"
+DATABASE_USER=""
+DATABASE_PASSWORD=""
+
+FLOWISE_USERNAME=user
+FLOWISE_PASSWORD=1234
+FLOWISE_SECRETKEY_OVERWRITE=myencryptionkey
+DEBUG=true
+LOG_LEVEL=debug (error | warn | info | verbose | debug)
+TOOL_FUNCTION_BUILTIN_DEP=crypto,fs
+TOOL_FUNCTION_EXTERNAL_DEP=moment,lodash
+
+LANGCHAIN_TRACING_V2=true
+LANGCHAIN_ENDPOINT=https://api.smith.langchain.com
+LANGCHAIN_API_KEY=your_api_key
+LANGCHAIN_PROJECT=your_project
+```
 
 ### Instalação do Nginx proxy reverso
 
